@@ -25,7 +25,7 @@ Route::prefix('admin')->group(function () {
         return view('admin.dashboard');
     })->name('admin.home');
 
-    Route::resource('category', CategoryController::class);
+    Route::resource('categories', CategoryController::class)->names('admin.categories');
     Route::resource('brand', BrandController::class);
     Route::resource('product', ProductController::class);
     Route::resource('user', UserController::class);
