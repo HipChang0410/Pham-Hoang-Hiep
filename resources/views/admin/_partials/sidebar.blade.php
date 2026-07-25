@@ -39,5 +39,11 @@
                 Thương hiệu
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ route('admin.orders.index') }}">
+                <i class="bi bi-cart-check"></i>
+                Đơn hàng
+            </a>
+        </li>
     </ul>
 </div>

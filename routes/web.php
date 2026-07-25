@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController;
@@ -47,6 +48,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
         })->name('admin.home');
+
+        Route::get('/orders', [OrderController::class, 'index'])->name('admin.orders.index');
+        Route::get('/orders/{order}', [OrderController::class, 'show'])->name('admin.orders.show');
+        Route::patch('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.status');
     });
 
     Route::middleware(['roles:1'])->group(function () {
