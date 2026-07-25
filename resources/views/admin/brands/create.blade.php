@@ -6,7 +6,7 @@
             <h1 class="h4 mb-3">Thêm mới thương hiệu</h1>
             <x-admin.alert :errors="$errors" :message="session('success')" type="success" />
 
-            <form action="{{ route('admin.brands.store') }}" method="POST">
+            <form action="{{ route('admin.brands.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label class="form-label">Tên thương hiệu</label>
@@ -19,6 +19,14 @@
                     <label class="form-label">Slug</label>
                     <input type="text" name="slug" class="form-control" value="{{ old('slug') }}">
                     @error('slug')
+                        <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3 img-group">
+                    <label class="form-label">Hình ảnh</label>
+                    <input type="file" name="img" class="form-control img-input">
+                    <div class="img-preview mt-2"></div>
+                    @error('img')
                         <div class="text-danger small mt-1">{{ $message }}</div>
                     @enderror
                 </div>

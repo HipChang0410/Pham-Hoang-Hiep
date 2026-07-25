@@ -6,7 +6,7 @@
             <h1 class="h4 mb-3">Cập nhật loại sản phẩm</h1>
             <x-admin.alert :errors="$errors" :message="session('success')" type="success" />
 
-            <form action="{{ route('admin.categories.update', $category->id) }}" method="POST">
+            <form action="{{ route('admin.categories.update', $category->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -20,6 +20,18 @@
                     <label class="form-label">Slug</label>
                     <input type="text" name="slug" class="form-control" value="{{ old('slug', $category->slug) }}">
                     @error('slug')
+                        <div class="text-danger small mt-1">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3 img-group">
+                    <label class="form-label">Hình ảnh</label>
+                    <input type="file" name="img" class="form-control img-input">
+                    <div class="img-preview mt-2">
+                        @if($category->image && $category->image !== 'default.png')
+                            <img src="{{ asset('storage/categories/' . $category->image) }}" class="img-thumbnail" width="120">
+                        @endif
+                    </div>
+                    @error('img')
                         <div class="text-danger small mt-1">{{ $message }}</div>
                     @enderror
                 </div>

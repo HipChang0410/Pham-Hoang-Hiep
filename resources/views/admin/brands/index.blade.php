@@ -16,6 +16,7 @@
                     <th>STT</th>
                     <th>Tên thương hiệu</th>
                     <th>Slug</th>
+                    <th>Ảnh</th>
                     <th>Trạng thái</th>
                     <th>Chức năng</th>
                 </tr>
@@ -26,7 +27,21 @@
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $brand->brandname }}</td>
                         <td>{{ $brand->slug }}</td>
+                        <td>
+                            @if($brand->image && $brand->image !== 'default.png')
+                                <img src="{{ asset('storage/brands/' . $brand->image) }}" alt="" width="60" class="img-thumbnail">
+                            @else
+                                <span class="text-muted">Không có ảnh</span>
+                            @endif
+                        </td>
                         <td>{{ $brand->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
+                        <td>
+                            @if($brand->image && $brand->image !== 'default.png')
+                                <img src="{{ asset('storage/brands/' . $brand->image) }}" alt="" width="60" class="img-thumbnail">
+                            @else
+                                <span class="text-muted">Không có ảnh</span>
+                            @endif
+                        </td>
                         <td>
                             <a href="{{ route('admin.brands.edit', $brand->id) }}" class="btn btn-primary btn-sm">Sửa</a>
                             <form action="{{ route('admin.brands.destroy', $brand->id) }}" method="POST" class="d-inline">

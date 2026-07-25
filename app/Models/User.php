@@ -13,15 +13,28 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
+    protected $table = 'staff_users';
+
+    protected $primaryKey = 'id';
+
+    public $timestamps = true;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'fullname',
+        'username',
         'email',
         'password',
+        'phone',
+        'address',
+        'gender',
+        'birthday',
+        'role',
+        'status',
     ];
 
     /**
@@ -44,6 +57,40 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'birthday' => 'date',
+            'role' => 'integer',
+            'status' => 'integer',
+            'gender' => 'integer',
         ];
+    }
+
+    public function getAuthIdentifierName(): string
+    {
+        return 'username';
+    }
+
+    public function getAuthIdentifier(): mixed
+    {
+        return $this->username;
+    }
+
+    public function getAuthPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getRememberToken(): ?string
+    {
+        return $this->remember_token;
+    }
+
+    public function setRememberToken($value): void
+    {
+        $this->remember_token = $value;
+    }
+
+    public function getRememberTokenName(): string
+    {
+        return 'remember_token';
     }
 }

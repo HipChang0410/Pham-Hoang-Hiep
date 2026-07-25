@@ -7,7 +7,7 @@
 
             <x-admin.alert :errors="$errors" :message="session('success')" type="success" />
 
-            <form action="{{ route('admin.products.update', $product->id) }}" method="POST">
+            <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -47,6 +47,30 @@
                         <div class="mb-3">
                             <label class="form-label">Giá khuyến mãi</label>
                             <input type="number" name="pricediscount" class="form-control" value="{{ old('pricediscount', $product->pricediscount) }}">
+                        </div>
+                        <div class="mb-3 img-group">
+                            <label class="form-label">Hình ảnh chính</label>
+                            <input type="file" name="img" class="form-control img-input">
+                            <div class="img-preview mt-2">
+                                @if($product->image)
+                                    <img src="{{ asset('storage/products/' . $product->image) }}" class="img-thumbnail" width="120">
+                                @endif
+                            </div>
+                            @error('img')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3 img-group">
+                            <label class="form-label">Hình ảnh phụ</label>
+                            <input type="file" name="imgs[]" class="form-control img-input" multiple>
+                            <div class="img-preview mt-2">
+                                @foreach($product->images as $image)
+                                    <img src="{{ asset('storage/products/' . $image->image) }}" class="img-thumbnail me-2 mb-2" width="100">
+                                @endforeach
+                            </div>
+                            @error('imgs')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label d-block">Trạng thái</label>

@@ -28,7 +28,11 @@
                         <td>{{ $item->catename }}</td>
                         <td>{{ $item->slug }}</td>
                         <td>
-                            <img src="{{ asset('images/' . ($item->image ?? 'default.png')) }}" alt="" width="60">
+                            @if($item->image && $item->image !== 'default.png')
+                                <img src="{{ asset('storage/categories/' . $item->image) }}" alt="" width="60" class="img-thumbnail">
+                            @else
+                                <span class="text-muted">Không có ảnh</span>
+                            @endif
                         </td>
                         <td>{{ $item->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
                         <td>

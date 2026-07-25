@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BrandRequest;
 use App\Models\Brand;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
@@ -22,10 +24,18 @@ class BrandController extends Controller
 
     public function store(BrandRequest $request)
     {
+        $imageName = null;
+
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $imageName = Str::slug($request->input('brandname')).'-'.time().'.'.$file->getClientOriginalExtension();
+            $file->storeAs('brands', $imageName, 'public');
+        }
+
         Brand::create([
             'brandname' => $request->input('brandname'),
             'slug' => $request->input('slug'),
-            'image' => $request->input('image', 'default.png'),
+            'image' => $imageName ?? 'default.png',
             'status' => $request->input('status', 1),
             'sort_order' => 0,
             'description' => $request->input('description'),
@@ -49,10 +59,22 @@ class BrandController extends Controller
     public function update(BrandRequest $request, string $id)
     {
         $brand = Brand::findOrFail($id);
+        $imageName = $brand->image;
+
+        if ($request->hasFile('img')) {
+            if ($brand->image && $brand->image !== 'default.png') {
+                Storage::disk('public')->delete('brands/'.$brand->image);
+            }
+
+            $file = $request->file('img');
+            $imageName = Str::slug($request->input('brandname')).'-'.time().'.'.$file->getClientOriginalExtension();
+            $file->storeAs('brands', $imageName, 'public');
+        }
+
         $brand->update([
             'brandname' => $request->input('brandname'),
             'slug' => $request->input('slug'),
-            'image' => $request->input('image', $brand->image ?? 'default.png'),
+            'image' => $imageName ?? 'default.png',
             'status' => $request->input('status', 1),
             'sort_order' => $brand->sort_order,
             'description' => $request->input('description'),

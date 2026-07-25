@@ -18,6 +18,7 @@
                     <th>Loại</th>
                     <th>Thương hiệu</th>
                     <th>Giá</th>
+                    <th>Ảnh</th>
                     <th>Trạng thái</th>
                     <th>Chức năng</th>
                 </tr>
@@ -31,6 +32,13 @@
                         <td>{{ $product->brand?->brandname ?? '---' }}</td>
                         <td>{{ number_format($product->price, 0, ',', '.') }} đ</td>
                         <td>{{ $product->status == 1 ? 'Hiển thị' : 'Ẩn' }}</td>
+                        <td>
+                            @if($product->image && $product->image !== 'default.png')
+                                <img src="{{ asset('storage/products/' . $product->image) }}" alt="" width="60" class="img-thumbnail">
+                            @else
+                                <span class="text-muted">Không có ảnh</span>
+                            @endif
+                        </td>
                         <td>
                             <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-primary btn-sm">Sửa</a>
                         </td>
