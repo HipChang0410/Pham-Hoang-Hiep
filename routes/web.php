@@ -21,9 +21,16 @@ Route::get('/demo-dd/{id?}', [DemoController::class, 'index5WithDd']);
 Route::get('/demo/{param1}/{param2}', [DemoController::class, 'index6']);
 
 Route::prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.home');
+
     Route::resource('category', CategoryController::class);
     Route::resource('brand', BrandController::class);
     Route::resource('product', ProductController::class);
     Route::resource('user', UserController::class);
     Route::resource('post', PostController::class);
 });
+
+Route::get('/test1', [ProductController::class, 'test1']);
+Route::get('/test2', [ProductController::class, 'test2']);
