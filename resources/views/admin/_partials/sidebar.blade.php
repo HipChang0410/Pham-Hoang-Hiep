@@ -28,9 +28,15 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white" href="#">
+            <a class="nav-link text-white" href="{{ route('admin.products.index') }}">
                 <i class="bi bi-box-seam"></i>
                 Sản phẩm
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ route('admin.brands.index') }}">
+                <i class="bi bi-award"></i>
+                Thương hiệu
             </a>
         </li>
     </ul>

@@ -26,8 +26,8 @@ Route::prefix('admin')->group(function () {
     })->name('admin.home');
 
     Route::resource('categories', CategoryController::class)->names('admin.categories');
-    Route::resource('brand', BrandController::class);
-    Route::resource('product', ProductController::class);
+    Route::resource('brands', BrandController::class)->names('admin.brands');
+    Route::resource('products', ProductController::class)->names('admin.products');
     Route::resource('user', UserController::class);
     Route::resource('post', PostController::class);
 });

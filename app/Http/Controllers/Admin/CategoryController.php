@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\CategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -23,18 +23,18 @@ class CategoryController extends Controller
         return view('admin.categories.create');
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         Category::create([
             'catename' => $request->input('catename'),
             'slug' => $request->input('slug'),
             'image' => $request->input('image', 'default.png'),
-            'status' => 1,
+            'status' => $request->input('status', 1),
             'sort_order' => 0,
             'description' => null,
         ]);
 
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.categories.index')->with('success', 'Thêm loại sản phẩm thành công');
     }
 
     public function show(string $id)
@@ -44,18 +44,30 @@ class CategoryController extends Controller
 
     public function edit(string $id)
     {
-        return 'Category edit: '.$id;
+        $category = Category::findOrFail($id);
+
+        return view('admin.categories.edit', compact('category'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request, string $id)
     {
-        return 'Category update: '.$id;
+        $category = Category::findOrFail($id);
+        $category->update([
+            'catename' => $request->input('catename'),
+            'slug' => $request->input('slug'),
+            'image' => $request->input('image', $category->image ?? 'default.png'),
+            'status' => $request->input('status', 1),
+            'sort_order' => $category->sort_order,
+            'description' => $category->description,
+        ]);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Cập nhật loại sản phẩm thành công');
     }
 
     public function destroy(string $id)
     {
         Category::destroy($id);
 
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.categories.index')->with('success', 'Xóa loại sản phẩm thành công');
     }
 }
