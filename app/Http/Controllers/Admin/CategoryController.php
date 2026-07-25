@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        $list = DB::table('categories')
+        $list = Category::query()
             ->select('id', 'catename', 'slug', 'image', 'status', 'sort_order')
             ->orderBy('catename')
-            ->get();
+            ->paginate(10);
 
         return view('admin.categories.index', compact('list'));
     }
@@ -25,15 +25,13 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        DB::table('categories')->insert([
+        Category::create([
             'catename' => $request->input('catename'),
             'slug' => $request->input('slug'),
             'image' => $request->input('image', 'default.png'),
             'status' => 1,
             'sort_order' => 0,
             'description' => null,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
 
         return redirect()->route('admin.categories.index');
@@ -56,7 +54,7 @@ class CategoryController extends Controller
 
     public function destroy(string $id)
     {
-        DB::table('categories')->where('id', $id)->delete();
+        Category::destroy($id);
 
         return redirect()->route('admin.categories.index');
     }
